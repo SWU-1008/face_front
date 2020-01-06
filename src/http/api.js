@@ -4,4 +4,6 @@ import http from './axios'
  */
 
 // demo 某功能比如获取一个列表
-export const login = params => http.post('/login', params)
+export const login = data => http.post('/login', data)
+// 人脸分析
+export const faceAnalyze = data => http.post('/face/analyze', data)

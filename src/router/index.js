@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home/Home.vue'
+import Index from '../views/Home/index.vue'
 import store from '../store'
 import layout from '../views/layout'
 
@@ -9,13 +10,14 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'index',
+    name: 'noname',
     component: layout,
-    redirect: '/home',
+    redirect: '/index',
     children: [
       // vue路由设置，path后面加/和不加有什么区别？
       // 去到child的时候，路径是#/child而不是#/fa/child，因为/xx就是根路径。
       // 而不以斜杠开头的，都会被当成普通的字符串拼到后面。
+      { path: 'index', name: 'index', component: Index },
       { path: 'home', name: 'home', component: Home },
       { path: 'component', name: 'component', component: () => import(/* webpackChunkName: "about" */ '../views/Home/component.vue') }
     ]
@@ -41,7 +43,7 @@ const router = new VueRouter({
   routes
 })
 
-const whiteList = ['/login', '/register'] // 不需要登陆的页面
+const whiteList = ['/index', '/login', '/register', '/home', '/component'] // 不需要登陆的页面
 // 全局前置守卫,验证是否登录
 router.beforeEach(function (to, from, next) {
   console.log(store.state.isLogin)

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <img alt="Vue logo" src="../../assets/logo.png">
+    <el-button @click="backStep" type="success" style="float: left">返回 2D阶段</el-button>
+    <el-divider>3D 阶段</el-divider>
+    <img alt="Vue logo" src="../../assets/logo.png" @click="shot">
     <div id="mycontainer"></div>
   </div>
 </template>
@@ -21,9 +23,19 @@ export default {
     }
   },
   methods: {
+    backStep () {
+      this.$router.push({ path: '/index' })
+    },
+    // 拍照
+    shot () {
+      let image = new Image()
+      this.renderer.render(this.scene, this.camera) // renderer为three.js里的渲染器，scene为场景 camera为相机
+      // 这里可以选择png格式jpeg格式
+      image.src = this.renderer.domElement.toDataURL('image/jpeg')
+      document.body.appendChild(image) // 这样就可以查看截出来的图片了
+    },
     // 外部模型加载函数
     loadObj () {
-      console.log('loadObj')
       let that = this
       // 材质读取,包含材质
       new MTLLoader().load('/head3d/head3d.obj.mtl', materials => {
@@ -57,7 +69,7 @@ export default {
       // 初始化相机
       console.log(window.innerWidth)
       console.log(window.innerHeight)
-      this.camera = new Three.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 2800)
+      this.camera = new Three.PerspectiveCamera(50, window.innerWidth / 2 / window.innerHeight, 1, 2800)
       this.camera.position.set(0, 0, 2800)
       this.camera.lookAt(this.scene.position)
       // 渲染模型 alpha为透明背景
@@ -66,7 +78,7 @@ export default {
       })
       // this.renderer.setClearColor(0x000000)
       this.renderer.setPixelRatio(window.devicePixelRatio)// 为了兼容高清屏幕
-      this.renderer.setSize(window.innerWidth, window.innerHeight)
+      this.renderer.setSize(window.innerWidth / 2, window.innerHeight)
       // 初始化控制器
       this.controls = new OrbitControls(this.camera, this.renderer.domElement)
       this.controls.target.set(0, 0, 100)
@@ -101,7 +113,7 @@ export default {
 </script>
 <style scoped>
   #mycontainer {
-    width: 100vw;
+    width: 50vw;
     height: 100vh;
     overflow: hidden;
   }

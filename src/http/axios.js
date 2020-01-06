@@ -90,10 +90,10 @@ class http {
     return instance.get(url, params)
   }
 
-  static post (url, params) {
+  static post (url, data) {
     // console.log(params)
     // console.log('caca')
-    return instance.post(url, params)
+    return instance.post(url, data)
   }
 }
 
